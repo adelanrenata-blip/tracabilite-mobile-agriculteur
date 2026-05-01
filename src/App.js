@@ -1,25 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-<div 
-  style={{ 
-    width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,.25)", 
-    display: "flex", alignItems: "center", justifyContent: "center", 
-    color: W, fontWeight: 700, fontSize: 13, cursor: "pointer",
-    position: "relative"
-  }}
-  title={`${user.name} • ${user.coop}`}
-  onClick={() => {
-    if (confirm("Se déconnecter ?")) handleLogout();
-  }}
->
-  {user.name?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
-  {/* Petit indicateur de déconnexion au survol */}
-  <span style={{
-    position:"absolute", bottom:-4, right:-4, width:14, height:14, 
-    borderRadius:"50%", background:OR, color:W, fontSize:9, 
-    display:"flex", alignItems:"center", justifyContent:"center",
-    border:`2px solid ${GD}`
-  }}>✕</span>
-</div>
+ import { useState, useEffect, useRef, useCallback } from "react";
+
 /* ─── Design tokens ─────────────────────────────────────────── */
 const G   = "#2C5F1A";   // primary green
 const GD  = "#1F4412";   // dark green
@@ -36,6 +16,8 @@ const Ico = {
       <polyline points="5.5,11 9,14.5 16.5,7.5" stroke={W} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
+
+  
   Bell: () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke={W} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
@@ -139,7 +121,78 @@ const Ico = {
       <line x1="5" y1="20" x2="27" y2="20" stroke="#aaa" strokeWidth="1.5"/>
     </svg>
   ),
-};
+};/* ─── LoginScreen Component ──────────────────────────────────── */
+function LoginScreen({ onLogin }) {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    setTimeout(() => {
+      if (phone.trim() && password.length >= 4) {
+        onLogin({ name: "Koffi Mensah", phone, coop: "COOPAC Kloto", role: "farmer" });
+      } else {
+        setError("Numéro invalide ou mot de passe trop court (min 4)");
+      }
+      setLoading(false);
+    }, 600);
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: GBG, padding: 20 }}>
+      <div style={{ background: W, padding: 32, borderRadius: 20, width: "100%", maxWidth: 420, boxShadow: "0 8px 30px rgba(0,0,0,0.1)" }}>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <Ico.Leaf s={48} col={G} />
+          <h2 style={{ margin: "12px 0 4px", color: G, fontSize: 24 }}>AgriChain Togo</h2>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>Espace Agriculteur</p>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <input
+            placeholder="📱 Numéro de téléphone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }}
+            required
+          />
+          <input
+            type="password"
+            placeholder="🔐 Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }}
+            required
+          />
+
+          {error && (
+            <div style={{ background: "rgba(232,153,10,.15)", color: "#8a5e00", padding: 10, borderRadius: 8, fontSize: 13, textAlign: "center" }}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          <Btn loading={loading} disabled={loading} style={{ marginTop: 8 }}>
+            {loading ? "Connexion..." : "🔐 Se connecter"}
+          </Btn>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => onLogin({ name: "Koffi Mensah", phone: "+228 XX", coop: "COOPAC Kloto", role: "farmer" })}
+          style={{ width: "100%", padding: "12px", marginTop: 12, border: `2px dashed ${G}`, background: "transparent", borderRadius: 10, color: G, fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+        >
+          🧪 Mode démo (sans connexion)
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
 
 /* ─── Species data ───────────────────────────────────────────── */
 const SPECIES = [
@@ -272,15 +325,19 @@ function useGPS() {
 
 /* ─── Main App ───────────────────────────────────────────────── */
 export default function App() {
+
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({ species: null, weight: "", date: new Date().toISOString().slice(0, 10), photo: null, photoURL: null });
   const [syncState, setSyncState] = useState({ status: "idle", hash: null, blockId: null, error: null, queued: false });
   const [offline, setOffline] = useState(false);
   const [queueCount, setQueueCount] = useState(0);
   const [syncing, setSyncing] = useState(false);
+  const [user, setUser] = useState(null);
   const gps = useGPS();
   const fileRef = useRef();
 
+
+  
   // Auto-capture GPS when reaching step 3
   useEffect(() => { if (step === 3 && gps.status === "idle") gps.capture(); }, [step]);
 
@@ -334,6 +391,9 @@ export default function App() {
     gps.status = "idle";
   }
 
+if (!user) {
+    return <LoginScreen onLogin={setUser} />;
+  }
   const canNext = [
     !!form.species,
     form.weight && parseFloat(form.weight) > 0,
