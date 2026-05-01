@@ -1,0 +1,568 @@
+import React, { useState, createContext, useContext } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import { 
+  Leaf, Tractor, Handshake, Ship, LineChart, QrCode, MapPin, Seedling, 
+  Weight, Camera, CheckCircle, History, Upload, Package, FileText, User, 
+  Hash, Clock, Truck, Sun, Droplets, Scan, TreeDeciduous, Calendar, 
+  Users, Fingerprint, Gavel, Globe, ShieldCheck, X, Search, Database, 
+  Link, Award, BarChart3, TrendingUp, Shield, Lock, Eye, FileCheck
+} from 'lucide-react';
+
+// ============================================
+// DONNÉES SIMULÉES (Blockchain Polygon)
+// ============================================
+
+const generateHash = () => '0x' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 8);
+
+const sampleLot = {
+  id: "LOT-TG-2026-04791",
+  qrData: "CHAINCACAO|LOT-TG-2026-04791|0xb84adf2e7c3a",
+  hashOnChain: "0xb84adf2e7c3a9f1b2c4d5e6f7a8b9c0d1e2f3a4b",
+  producteur: "Koffi Mensah",
+  parcelleGPS: "6.14°N 1.21°E",
+  espece: "Cacao — Forastero",
+  poids: "245 Kg",
+  dateRecolte: "15 Janvier 2026",
+  etapeTracee: "4/4",
+  supplyChain: [
+    { etape: "🌱 Récolte", lieu: "Parcelle PK - 14", date: "15 jan, 08:30", signataire: "Koffi Mensah" },
+    { etape: "🍂 Fermentation", lieu: "Station Kloto", date: "15 - 21 Jan", signataire: "COOPAC Kloto" },
+    { etape: "☀️ Séchage", lieu: "Unité COOPAC", date: "21 jan - 02 fév", signataire: "COOPAC Kloto" },
+    { etape: "📦 Export", lieu: "Port de Lomé", date: "05 Fév 2026", signataire: "TogoCacao Export" }
+  ],
+  statutEUDR: "CONFORME ✅",
+  certificat: { numero: "CERT-TG-2026-00342", emission: "05 Fév 2026", expiration: "05 Fév 2027", exportateur: "COOPAC Kloto", destination: "France" },
+  historiqueTransitions: [
+    { acteur: "Koffi Mensah", action: "Enregistrement récolte", date: "15/01/2026 08:32", signature: "0x3f1a...b2e" },
+    { acteur: "COOPAC Kloto", action: "Réception & fermentation", date: "16/01/2026 14:15", signature: "0xa87c...d33" },
+    { acteur: "CacaoTogo Transfo", action: "Séchage & stockage", date: "02/02/2026 09:44", signature: "0xfe12...9ab" },
+    { acteur: "TogoCacao Export SA", action: "Export vers UE", date: "05/02/2026 11:02", signature: "0xbb77...f01" }
+  ]
+};
+
+const coopLots = [
+  { id: "LOT-TG-2026-04791", poids: "245 kg", espece: "Forastero", date: "15 Jan", statut: "Enregistré", producteur: "Koffi Mensah", gps: "6.14°N 1.21°E", hash: "0xb84a...d/f2" },
+  { id: "LOT-TG-2026-04788", poids: "312 kg", espece: "Trinitario", date: "14 Jan", statut: "Certifié", producteur: "Ami Gbéto", gps: "6.22°N 1.19°E", hash: "0xa73c...e8a" },
+  { id: "LOT-TG-2026-04778", poids: "198 kg", espece: "Forastero", date: "12 Jan", statut: "Exporté", producteur: "Yao Lawson", gps: "6.09°N 1.23°E", hash: "0xf91b...c33" },
+  { id: "LOT-TG-2026-04765", poids: "178 kg", espece: "Criollo", date: "10 Jan", statut: "Certifié", producteur: "Mama Adjovi", gps: "6.18°N 1.18°E", hash: "0xd42e...a77" },
+  { id: "LOT-TG-2026-04752", poids: "298 kg", espece: "Forastero", date: "08 Jan", statut: "Exporté", producteur: "Kossi Améyom", gps: "6.21°N 1.25°E", hash: "0xc33f...b88" }
+];
+
+// ============================================
+// CONTEXTE APPLICATION
+// ============================================
+
+const AppContext = createContext();
+
+// ============================================
+// COMPOSANT PRINCIPAL APP
+// ============================================
+
+function App() {
+  const [currentRole, setCurrentRole] = useState('coop');
+  const [blockchainTx, setBlockchainTx] = useState([]);
+  const [selectedLotId, setSelectedLotId] = useState('LOT-TG-2026-04791');
+
+  const addTransaction = (tx) => {
+    const newTx = { ...tx, id: Date.now(), timestamp: new Date().toLocaleString() };
+    setBlockchainTx(prev => [newTx, ...prev]);
+    toast.success(`✅ Transaction enregistrée sur Polygon (${tx.hash?.substring(0, 12)}...)`);
+  };
+
+  const renderDashboard = () => {
+    switch (currentRole) {
+      case 'farmer': return <FarmerDashboard onTransaction={addTransaction} />;
+      case 'coop': return <CoopDashboard selectedLotId={selectedLotId} setSelectedLotId={setSelectedLotId} onTransaction={addTransaction} />;
+      case 'importer': return <ImporterDashboard onTransaction={addTransaction} />;
+      case 'admin': return <AdminDashboard blockchainTx={blockchainTx} />;
+      default: return <CoopDashboard selectedLotId={selectedLotId} setSelectedLotId={setSelectedLotId} onTransaction={addTransaction} />;
+    }
+  };
+
+  return (
+    <AppContext.Provider value={{ blockchainTx, addTransaction, currentRole, setCurrentRole }}>
+      <div className="min-h-screen bg-[#f5f2ea]">
+        <div className="container mx-auto px-4 py-6 max-w-7xl">
+          <Header currentRole={currentRole} setCurrentRole={setCurrentRole} />
+          {renderDashboard()}
+          <Toaster position="bottom-right" toastOptions={{ duration: 4000 }} />
+          <Footer />
+        </div>
+      </div>
+    </AppContext.Provider>
+  );
+}
+
+// ============================================
+// HEADER COMPONENT
+// ============================================
+
+function Header({ currentRole, setCurrentRole }) {
+  const roles = [
+    { id: 'farmer', label: 'Koffi (Agriculteur)', icon: Tractor },
+    { id: 'coop', label: 'COOPAC Kloto', icon: Handshake },
+    { id: 'importer', label: 'Importateur UE', icon: Ship },
+    { id: 'admin', label: 'Admin / Certifieur', icon: LineChart }
+  ];
+
+  return (
+    <div className="flex flex-wrap justify-between items-center bg-white rounded-2xl p-4 shadow-sm border border-[#ece3d7] mb-6">
+      <div className="flex items-center gap-3">
+        <div className="bg-gradient-to-br from-[#2d6a4f] to-[#b97f44] p-2.5 rounded-xl">
+          <Leaf className="w-6 h-6 text-white" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-[#2d6a4f] to-[#b97f44] bg-clip-text text-transparent">ChainCacao</h1>
+          <p className="text-xs text-gray-500">Blockchain infalsifiable · Conformité EUDR · Polygon</p>
+        </div>
+      </div>
+      <div className="flex gap-2 flex-wrap mt-3 sm:mt-0">
+        {roles.map(role => {
+          const Icon = role.icon;
+          return (
+            <button
+              key={role.id}
+              onClick={() => setCurrentRole(role.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm transition-all ${
+                currentRole === role.id ? 'bg-[#2d6a4f] text-white shadow-md' : 'bg-[#efe7db] text-gray-700 hover:bg-[#e3d9c8]'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {role.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// FOOTER COMPONENT
+// ============================================
+
+function Footer() {
+  return (
+    <div className="mt-10 bg-[#e9e2d4] rounded-2xl p-5 text-center">
+      <p className="font-semibold text-[#2d6a4f]">🔗 ChainCacao · MIABE HACKATHON 2026 — Togo · Projet T-01</p>
+      <p className="text-gray-600 text-sm mt-1">✅ Transactions Polygon testnet (~0.001$) · Hash immuables · Preuve GPS & signatures · Conformité EUDR vérifiable</p>
+      <div className="flex justify-center gap-4 mt-3 text-xs text-gray-500">
+        <span><strong>40 000</strong> familles togolaises</span>
+        <span><strong>15-25%</strong> valeur perçue → objectif +300%</span>
+        <span><strong>~0.001$</strong> / transaction</span>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// FARMER DASHBOARD (Koffi Mensah)
+// ============================================
+
+function FarmerDashboard({ onTransaction }) {
+  const [poids, setPoids] = useState(250);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastTx, setLastTx] = useState(null);
+  const [photoUploaded, setPhotoUploaded] = useState(false);
+
+  const handleEnregistrement = () => {
+    if (!photoUploaded) {
+      toast.error("Veuillez d'abord prendre une photo de la parcelle");
+      return;
+    }
+    setIsSubmitting(true);
+    setTimeout(() => {
+      const txHash = generateHash();
+      onTransaction({
+        hash: txHash,
+        type: 'ENREGISTREMENT_RECOLTE',
+        acteur: 'Koffi Mensah',
+        poids: `${poids} kg`,
+        gps: '6.8643°N, 0.6472°E',
+        cout: '0.001 USD'
+      });
+      setLastTx(txHash);
+      setIsSubmitting(false);
+      toast.success(`✅ Lot enregistré : ${poids}kg de cacao sur Polygon`);
+    }, 1500);
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7]">
+        <div className="flex justify-between items-center border-b border-[#f0e8de] pb-3 mb-4">
+          <span className="font-semibold flex items-center gap-2"><MapPin className="w-5 h-5 text-[#b97f44]" /> Koffi Mensah – Parcelle Dayes</span>
+          <span className="badge bg-[#e9e2d4] px-3 py-1 rounded-full text-xs">🔗 Polygon prêt</span>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 p-3 bg-[#f8f6f2] rounded-xl">
+            <MapPin className="w-5 h-5 text-[#2d6a4f]" />
+            <div className="flex-1">
+              <p className="text-xs text-gray-500">Coordonnées GPS parcelle (preuve EUDR)</p>
+              <p className="font-mono font-semibold text-sm">6.8643°N, 0.6472°E</p>
+            </div>
+            <CheckCircle className="w-5 h-5 text-green-600" />
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-[#f8f6f2] rounded-xl">
+            <Seedling className="w-5 h-5 text-[#2d6a4f]" />
+            <div>
+              <p className="text-xs text-gray-500">Espèce</p>
+              <p className="font-semibold">Cacao Criollo (Premium)</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-[#f8f6f2] rounded-xl">
+            <Weight className="w-5 h-5 text-[#2d6a4f]" />
+            <div className="flex-1">
+              <p className="text-xs text-gray-500">Poids (kg)</p>
+              <input 
+                type="number" 
+                value={poids} 
+                onChange={(e) => setPoids(e.target.value)}
+                className="border border-gray-300 rounded-full px-4 py-1.5 w-32 text-sm"
+                step="10"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-[#f8f6f2] rounded-xl">
+            <Camera className="w-5 h-5 text-[#2d6a4f]" />
+            <div className="flex-1">
+              <p className="text-xs text-gray-500">Photo parcelle (preuve visuelle)</p>
+              {!photoUploaded ? (
+                <button onClick={() => setPhotoUploaded(true)} className="text-xs text-[#2d6a4f] underline">📸 Prendre une photo</button>
+              ) : (
+                <span className="text-sm text-green-600">✅ Photo validée</span>
+              )}
+            </div>
+          </div>
+
+          <button 
+            onClick={handleEnregistrement}
+            disabled={isSubmitting}
+            className="w-full bg-[#2d6a4f] text-white font-semibold py-3 rounded-full hover:bg-[#1f543d] transition flex items-center justify-center gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            {isSubmitting ? 'ENVOI VERS POLYGON...' : 'ENREGISTRER SUR BLOCKCHAIN (~0.001$)'}
+          </button>
+
+          {lastTx && (
+            <div className="mt-3 p-3 bg-green-50 rounded-xl text-sm border border-green-200">
+              <CheckCircle className="w-4 h-4 inline text-green-600 mr-1" />
+              Transaction : {lastTx.substring(0, 24)}...<br />
+              ⛓️ Enregistrement immuable sur Polygon testnet
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7]">
+        <div className="flex items-center gap-2 border-b border-[#f0e8de] pb-3 mb-4">
+          <History className="w-5 h-5 text-[#b97f44]" />
+          <span className="font-semibold">Dernières transactions on-chain</span>
+        </div>
+        <div className="space-y-3">
+          <div className="lot-item bg-[#fefcf9] border-l-4 border-[#b97f44] p-3 rounded-xl">
+            <div>
+              <p className="font-semibold text-sm">Lot #CACAO-2405-001</p>
+              <p className="text-xs text-gray-500">Hash: 0x3f1a...b2e · 250kg · GPS ✅ · 15/01/2026</p>
+            </div>
+            <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
+          </div>
+          <div className="lot-item bg-[#fefcf9] border-l-4 border-[#b97f44] p-3 rounded-xl">
+            <div>
+              <p className="font-semibold text-sm">Lot #CACAO-2404-089</p>
+              <p className="text-xs text-gray-500">Hash: 0x7e2d...a11 · 310kg · GPS ✅ · 10/01/2026</p>
+            </div>
+            <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
+          </div>
+          <div className="lot-item bg-[#fefcf9] border-l-4 border-[#b97f44] p-3 rounded-xl">
+            <div>
+              <p className="font-semibold text-sm">Lot #CACAO-2404-055</p>
+              <p className="text-xs text-gray-500">Hash: 0x9a2b...c77 · 278kg · GPS ✅ · 05/01/2026</p>
+            </div>
+            <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
+          </div>
+        </div>
+        <p className="text-xs text-gray-500 mt-4 flex items-center gap-1">
+          <Shield className="w-3 h-3" /> Preuve infalsifiable exigée par règlement UE 2025/2026
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// COOP DASHBOARD (COOPAC Kloto)
+// ============================================
+
+function CoopDashboard({ selectedLotId, setSelectedLotId, onTransaction }) {
+  const selectedLot = coopLots.find(l => l.id === selectedLotId) || coopLots[0];
+  const isMainLot = selectedLot.id === 'LOT-TG-2026-04791';
+
+  const handleGenerateCert = () => {
+    onTransaction({
+      hash: generateHash(),
+      type: 'CERTIFICAT_EUDR',
+      lotId: selectedLot.id,
+    });
+    toast.success(`✅ Certificat EUDR généré pour ${selectedLot.id}`);
+  };
+
+  const handleSimulateQR = () => {
+    toast.success(`🔍 Lot ${selectedLot.id} – Origine GPS: ${selectedLot.gps} – CONFORME EUDR`);
+  };
+
+  const supplyChainSteps = [
+    { etape: '🌱 Récolte', lieu: 'Parcelle PK - 14', date: '15 jan, 08:30', signataire: 'Koffi Mensah' },
+    { etape: '🍂 Fermentation', lieu: 'Station Kloto', date: '15 - 21 Jan', signataire: 'COOPAC Kloto' },
+    { etape: '☀️ Séchage', lieu: 'Unité COOPAC', date: '21 jan - 02 fév', signataire: 'COOPAC Kloto' },
+    { etape: '📦 Export', lieu: 'Port de Lomé', date: '05 Fév 2026', signataire: 'TogoCacao Export' }
+  ];
+
+  return (
+    <div className="grid lg:grid-cols-3 gap-6">
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7] lg:col-span-1">
+        <div className="flex justify-between items-center border-b border-[#f0e8de] pb-3 mb-4">
+          <span className="font-semibold flex items-center gap-2"><Package className="w-5 h-5 text-[#b97f44]" /> COOPAC Kloto – Kpalimé</span>
+          <span className="badge bg-[#e9e2d4] px-3 py-1 rounded-full text-xs">Traçabilité EUDR</span>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="bg-[#f8f6f2] rounded-xl p-3 text-center">
+            <div className="text-2xl font-extrabold text-[#2d6a4f]">4 827 kg</div>
+            <p className="text-xs text-gray-500">Poids total récolté</p>
+          </div>
+          <div className="bg-[#f8f6f2] rounded-xl p-3 text-center">
+            <div className="text-2xl font-extrabold text-[#2d6a4f]">23</div>
+            <p className="text-xs text-gray-500">Lots enregistrés</p>
+          </div>
+          <div className="bg-[#f8f6f2] rounded-xl p-3 text-center">
+            <div className="text-2xl font-extrabold text-[#2d6a4f]">18</div>
+            <p className="text-xs text-gray-500">Certificats émis</p>
+          </div>
+          <div className="bg-[#f8f6f2] rounded-xl p-3 text-center">
+            <div className="text-2xl font-extrabold text-[#2d6a4f]">5</div>
+            <p className="text-xs text-gray-500">En attente EUDR</p>
+          </div>
+        </div>
+
+        <p className="font-semibold text-sm mb-3">📦 Lots de récolte</p>
+        <div className="space-y-2 max-h-80 overflow-y-auto">
+          {coopLots.map(lot => (
+            <div 
+              key={lot.id}
+              onClick={() => setSelectedLotId(lot.id)}
+              className={`lot-item bg-[#fefcf9] border-l-4 p-3 rounded-xl cursor-pointer transition-all ${selectedLot.id === lot.id ? 'border-l-[#2d6a4f] bg-[#eef6f0]' : 'border-l-[#b97f44]'}`}
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-semibold text-sm">{lot.id}</p>
+                  <p className="text-xs text-gray-500">{lot.poids} · {lot.espece} · {lot.date}</p>
+                </div>
+                <span className="badge bg-[#e9e2d4] px-2 py-0.5 rounded-full text-xs">{lot.statut}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 pt-4 border-t border-[#f0e8de]">
+          <button onClick={handleGenerateCert} className="w-full border border-[#b97f44] text-[#b97f44] font-semibold py-2 rounded-full hover:bg-[#b97f44] hover:text-white transition flex items-center justify-center gap-2 text-sm">
+            <FileText className="w-4 h-4" /> GÉNÉRER CERTIFICAT CONFORMITÉ
+          </button>
+        </div>
+      </div>
+
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7] lg:col-span-1">
+        <div className="border-b border-[#f0e8de] pb-3 mb-4">
+          <span className="font-semibold">📋 Détail : {selectedLot.id}</span>
+        </div>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <Seedling className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm">Espèce : <strong>{selectedLot.espece}</strong></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <MapPin className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm">Origine GPS : <strong>{selectedLot.gps}</strong> (preuve EUDR)</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Weight className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm">Poids : <strong>{selectedLot.poids}</strong></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <User className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm">Producteur : <strong>{selectedLot.producteur}</strong></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Hash className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm font-mono">Hash blockchain : <strong>{selectedLot.hash}</strong></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Clock className="w-4 h-4 text-[#2d6a4f]" />
+            <span className="text-sm">Enregistrement : <strong>{selectedLot.date}</strong></span>
+          </div>
+        </div>
+
+        {isMainLot && (
+          <div className="border-t border-[#f0e8de] mt-4 pt-4">
+            <p className="font-semibold text-sm mb-3 flex items-center gap-2"><Clock className="w-4 h-4" /> Supply chain (immuable on-chain)</p>
+            <div className="space-y-2">
+              {supplyChainSteps.map((step, idx) => (
+                <div key={idx} className="flex items-center gap-3 text-sm p-2 bg-[#f8f6f2] rounded-lg">
+                  <span className="text-lg">{step.etape.split(' ')[0]}</span>
+                  <div className="flex-1">
+                    <span className="font-medium">{step.etape}</span>
+                    <span className="text-xs text-gray-500 ml-2">{step.lieu}</span>
+                  </div>
+                  <span className="text-xs">{step.date}</span>
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7] lg:col-span-1">
+        <div className="border-b border-[#f0e8de] pb-3 mb-4">
+          <span className="font-semibold flex items-center gap-2"><FileText className="w-5 h-5 text-[#b97f44]" /> Certificat d'exportation / EUDR</span>
+        </div>
+        
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Certificat n°</span>
+            <span className="font-mono font-semibold text-sm">CERT-TG-2026-00342</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Émission</span>
+            <span className="text-sm">05 Fév 2026</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Expiration</span>
+            <span className="text-sm">05 Fév 2027</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Exportateur</span>
+            <span className="font-medium text-sm">COOPAC Kloto</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Destination</span>
+            <span className="text-sm">France / Belgique</span>
+          </div>
+        </div>
+
+        <div className="mt-5 bg-gradient-to-br from-[#2d6a4f]/5 to-[#b97f44]/5 rounded-xl p-4 text-center border border-dashed border-[#b97f44]/30">
+          <QrCode className="w-12 h-12 mx-auto text-[#2d6a4f] mb-2" />
+          <p className="text-xs font-mono break-all bg-white p-1 rounded">{selectedLot.id}|{selectedLot.hash}</p>
+          <button onClick={handleSimulateQR} className="w-full bg-[#2d6a4f] text-white font-semibold py-2 rounded-full mt-3 text-sm flex items-center justify-center gap-2 hover:bg-[#1f543d] transition">
+            <Scan className="w-4 h-4" /> SIMULER QR CODE (Vérification importateur)
+          </button>
+        </div>
+        
+        <div className="mt-3 text-center">
+          <p className="text-xs text-gray-400">🔗 Lien IPFS du certificat : <span className="font-mono">QmCert...EUDR</span></p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// IMPORTER DASHBOARD (Belgian Chocolate NV)
+// ============================================
+
+function ImporterDashboard({ onTransaction }) {
+  const [scanned, setScanned] = useState(false);
+
+  const handleScan = () => {
+    setScanned(true);
+    onTransaction({
+      hash: generateHash(),
+      type: 'VERIFICATION_EUDR',
+      lotId: sampleLot.id,
+    });
+    toast.success('🔍 QR Code scanné – Vérification EUDR en cours');
+  };
+
+  return (
+    <div className="grid gap-6">
+      <div className="card bg-white rounded-2xl p-5 shadow-sm border border-[#ece3d7]">
+        <div className="flex justify-between items-center border-b border-[#f0e8de] pb-3 mb-4">
+          <span className="font-semibold flex items-center gap-2"><Users className="w-5 h-5 text-[#b97f44]" /> Belgian Chocolate NV – Importateur certifié EUDR</span>
+          <span className="badge bg-[#e9e2d4] px-3 py-1 rounded-full text-xs">Vérification réglementaire</span>
+        </div>
+        
+        <div className="text-center py-8 bg-gradient-to-br from-[#f8f6f2] to-[#f0ebe3] rounded-xl">
+          <div className="w-20 h-20 mx-auto bg-[#2d6a4f]/10 rounded-2xl flex items-center justify-center mb-4">
+            <Scan className="w-10 h-10 text-[#2d6a4f]" />
+          </div>
+          <p className="text-gray-500 mb-4">Scannez le QR Code du conteneur pour vérifier la conformité</p>
+          <button onClick={handleScan} className="bg-[#2d6a4f] text-white font-semibold py-2 px-6 rounded-full flex items-center gap-2 mx-auto hover:bg-[#1f543d] transition">
+            <Scan className="w-4 h-4" /> SCANNER LE LOT
+          </button>
+        </div>
+      </div>
+
+      {scanned && (
+        <div className="card bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-5 shadow-sm border border-green-200">
+          <div className="flex items-center gap-2 text-green-700 mb-4">
+            <CheckCircle className="w-6 h-6" />
+            <span className="font-bold text-lg">RÉSULTAT VÉRIFICATION EUDR – CONFORME ✅</span>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 p-2 bg-white rounded-lg">
+                <MapPin className="w-4 h-4 text-[#2d6a4f]" />
+                <span className="text-sm">Parcelle d'origine : <strong>{sampleLot.parcelleGPS}</strong></span>
+              </div>
+              <div className="flex items-center gap-2 p-2 bg-white rounded-lg">
+                <TreeDeciduous className="w-4 h-4 text-[#2d6a4f]" />
+                <span className="text-sm">Espèce : <strong>{sampleLot.espece}</strong></span>
+              </div>
+              <div className="flex items-center gap-2 p-2 bg-white rounded-lg">
+                <Calendar className="w-4 h-4 text-[#2d6a4f]" />
+                <span className="text-sm">Date récolte : <strong>{sampleLot.dateRecolte}</strong></span>
+              </div>
+              <div className="flex items-center gap-2 p-2 bg-white rounded-lg">
+                <Hash className="w-4 h-4 text-[#2d6a4f]" />
+                <span className="text-sm font-mono text-xs">Hash blockchain : <strong>{sampleLot.hashOnChain.substring(0, 30)}...</strong></span>
+              </div>
+            </div>
+            
+            <div>
+              <p className="font-semibold text-sm mb-2 flex items-center gap-1"><Link className="w-4 h-4" /> Historique custody (infalsifiable)</p>
+              <div className="bg-white rounded-lg p-2 space-y-1">
+                {sampleLot.historiqueTransitions.map((h, idx) => (
+                  <div key={idx} className="text-sm flex justify-between border-b border-gray-100 py-1.5 px-2">
+                    <span>→ <strong>{h.acteur}</strong> : {h.action}</span>
+                    <span className="text-gray-500 text-xs">{h.date}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-4 p-3 bg-white rounded-lg text-center border border-green-200">
+            <ShieldCheck className="w-5 h-5 inline text-green-600 mr-1" />
+            <span className="text-sm font-medium">Preuve infalsifiable – exigence EUDR (Règlement 2025) satisfaite</span>
+          </div>
+          
+          <div className="mt-3 text-xs text-gray-500 text-center">
+            📍 Aucune preuve de déforestation – origine GPS vérifiée sur Polygon
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================
+// ADMIN DASHBOARD (Audit & Certification)
+// ============================================
+
+function AdminDashboard({ blockchainTx }) {
+  const [active
