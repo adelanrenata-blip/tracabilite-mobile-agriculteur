@@ -322,6 +322,57 @@ function useGPS() {
   }, []);
   return { ...state, capture };
 }
+/* ─── SignupScreen Component ─────────────────────────────────── */
+function SignupScreen({ onSignup, onBackToLogin }) {
+  const [form, setForm] = useState({
+    name: "", phone: "", coop: "", password: ""
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      onSignup({ 
+        name: form.name, 
+        phone: form.phone, 
+        coop: form.coop, 
+        role: "farmer" 
+      });
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: GBG, padding: 20 }}>
+      <div style={{ background: W, padding: 24, borderRadius: 20, width: "100%", maxWidth: 420, boxShadow: "0 8px 30px rgba(0,0,0,0.1)" }}>
+        <div style={{ textAlign: "center", marginBottom: 20 }}>
+          <Ico.Leaf s={40} col={G} />
+          <h2 style={{ margin: "12px 0 4px", color: G }}>Rejoindre AgriChain</h2>
+          <p style={{ margin: 0, color: "#666", fontSize: 13 }}>Crée ton compte agriculteur</p>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <input placeholder="👤 Nom complet" value={form.name} onChange={e => setForm({...form, name: e.target.value})} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="📱 Téléphone" type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="🤝 Coopérative" value={form.coop} onChange={e => setForm({...form, coop: e.target.value})} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input type="password" placeholder="🔐 Mot de passe (min 4 caractères)" value={form.password} onChange={e => setForm({...form, password: e.target.value})} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+
+          <Btn loading={loading} disabled={loading} style={{ marginTop: 8 }}>
+            {loading ? "Création..." : "✅ Créer mon compte"}
+          </Btn>
+        </form>
+
+        <div style={{ textAlign: "center", marginTop: 16, padding: "12px 0", borderTop: "1px solid #eee" }}>
+          <span style={{ fontSize: 13, color: "#666" }}>Déjà inscrit ? </span>
+          <button onClick={onBackToLogin} style={{ background: "none", border: "none", color: OR, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
+            Se connecter
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ─── Main App ───────────────────────────────────────────────── */
 export default function App() {
