@@ -292,7 +292,7 @@ export default function App() {
       // Auto-queue on failure
       addToQueue(record);
       setQueueCount(q => q + 1);
-      setSyncState({ status: "queued", hash: null, blockId: null, error: err.message, queued: true });
+      setSyncState({ status: "queued", hash: null, blockId: null, error: err.Initial commit - projet tracabilite-mobile, queued: true });
       setStep(5);
     }
     setSyncing(false);
