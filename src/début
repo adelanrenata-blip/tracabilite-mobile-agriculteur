@@ -1,0 +1,24 @@
+
+const express = require('express');
+const cors = require('cors');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
+const { open } = require('sqlite');
+const sqlite3 = require('sqlite3');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+
+// ─────────────────────────────────────────────
+//  CONFIGURATION
+// ─────────────────────────────────────────────
+
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'chaincacao-hackathon-2026-secret';
+const SALT_ROUNDS = 10;
+
+const REGIONS_TOGO = ['Plateaux', 'Kara', 'Centrale', 'Maritime', 'Savanes'];
+const CULTURES_AUTORISEES = ['cacao', 'cafe', 'autre'];
+
+const app = express();
+app.use(cors());
+app.use(express.json());
