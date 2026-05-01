@@ -1,5 +1,25 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-
+<div 
+  style={{ 
+    width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,.25)", 
+    display: "flex", alignItems: "center", justifyContent: "center", 
+    color: W, fontWeight: 700, fontSize: 13, cursor: "pointer",
+    position: "relative"
+  }}
+  title={`${user.name} • ${user.coop}`}
+  onClick={() => {
+    if (confirm("Se déconnecter ?")) handleLogout();
+  }}
+>
+  {user.name?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
+  {/* Petit indicateur de déconnexion au survol */}
+  <span style={{
+    position:"absolute", bottom:-4, right:-4, width:14, height:14, 
+    borderRadius:"50%", background:OR, color:W, fontSize:9, 
+    display:"flex", alignItems:"center", justifyContent:"center",
+    border:`2px solid ${GD}`
+  }}>✕</span>
+</div>
 /* ─── Design tokens ─────────────────────────────────────────── */
 const G   = "#2C5F1A";   // primary green
 const GD  = "#1F4412";   // dark green
