@@ -7,6 +7,7 @@ const GL = "#EAF3DE";
 const OR = "#E8990A";
 const GBG = "#F0EFEB";
 const W = "#FFFFFF";
+const RED = "#C41E3A";
 
 /* ─── Micro icons ────────────────────────────────────────────── */
 const Ico = {
@@ -47,6 +48,11 @@ const Ico = {
         ? <><path d="M5 12.55a11 11 0 0114.08 0" stroke={W} strokeWidth="2" strokeLinecap="round" /><path d="M1.42 9a16 16 0 0121.16 0" stroke={W} strokeWidth="1.8" strokeLinecap="round" /><path d="M8.53 16.11a6 6 0 016.95 0" stroke={W} strokeWidth="2" strokeLinecap="round" /><circle cx="12" cy="20" r="1" fill={W} /></>
         : <><line x1="2" y1="2" x2="22" y2="22" stroke={W} strokeWidth="2" strokeLinecap="round" /><path d="M8.53 16.11a6 6 0 016.95 0" stroke={W} strokeWidth="1.8" strokeLinecap="round" /><circle cx="12" cy="20" r="1" fill={W} /></>
       }
+    </svg>
+  ),
+  Network4G: () => (
+    <svg width="18" height="14" viewBox="0 0 24 18" fill="none">
+      <text x="0" y="13" fill={W} fontSize="11" fontWeight="700" fontFamily="sans-serif">4G</text>
     </svg>
   ),
   Leaf: ({ s = 30, col = G }) => (
@@ -158,7 +164,73 @@ const Ico = {
       <line x1="9" y1="17" x2="15" y2="17" stroke={col} strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   ),
+  Download: ({ s = 18, col = G }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points="7,10 12,15 17,10" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="12" y1="15" x2="12" y2="3" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Share: ({ s = 18, col = G }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <circle cx="18" cy="5" r="3" stroke={col} strokeWidth="1.8" />
+      <circle cx="6" cy="12" r="3" stroke={col} strokeWidth="1.8" />
+      <circle cx="18" cy="19" r="3" stroke={col} strokeWidth="1.8" />
+      <line x1="8.5" y1="10.5" x2="15.5" y2="6.5" stroke={col} strokeWidth="1.8" />
+      <line x1="8.5" y1="13.5" x2="15.5" y2="17.5" stroke={col} strokeWidth="1.8" />
+    </svg>
+  ),
+  Trophy: ({ s = 20, col = OR }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 01-12 0V4z" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 7H4a2 2 0 01-2-2V6a2 2 0 012-2h2" stroke={col} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M18 7h2a2 2 0 002-2V6a2 2 0 00-2-2h-2" stroke={col} strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  ),
+  Wallet: ({ s = 20, col = OR }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="6" width="18" height="12" rx="2" stroke={col} strokeWidth="1.8" />
+      <path d="M16 12h.01" stroke={col} strokeWidth="2" strokeLinecap="round" />
+      <path d="M3 10h18" stroke={col} strokeWidth="1.8" />
+    </svg>
+  ),
+  Building: ({ s = 18, col = G }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <rect x="4" y="2" width="16" height="20" rx="2" stroke={col} strokeWidth="1.8" />
+      <line x1="9" y1="2" x2="9" y2="22" stroke={col} strokeWidth="1.8" />
+      <line x1="15" y1="2" x2="15" y2="22" stroke={col} strokeWidth="1.8" />
+      <line x1="4" y1="8" x2="20" y2="8" stroke={col} strokeWidth="1.8" />
+      <line x1="4" y1="16" x2="20" y2="16" stroke={col} strokeWidth="1.8" />
+    </svg>
+  ),
+  ChevronRight: ({ s = 16, col = "#999" }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <polyline points="9,18 15,12 9,6" stroke={col} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Logout: ({ s = 18, col = RED }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke={col} strokeWidth="1.8" strokeLinecap="round" />
+      <polyline points="16,17 21,12 16,7" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="21" y1="12" x2="9" y2="12" stroke={col} strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  ),
+  Reset: ({ s = 18, col = G }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none">
+      <polyline points="1,4 1,10 7,10" stroke={col} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3.51 15a9 9 0 102.13-9.36L1 10" stroke={col} strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  ),
 };
+
+/* ─── Cooperatives data ─────────────────────────────────────── */
+const COOPERATIVES = [
+  { id: "c1", name: "COOPAC Kloto", region: "Plateaux" },
+  { id: "c2", name: "COOPAC Kpalimé", region: "Plateaux" },
+  { id: "c3", name: "COOPAC Atakpamé", region: "Plateaux" },
+  { id: "c4", name: "COOPAC Sokodé", region: "Centrale" },
+  { id: "c5", name: "COOPAC Kara", region: "Kara" },
+];
 
 /* ─── Species data ───────────────────────────────────────────── */
 const SPECIES = [
@@ -354,11 +426,226 @@ function TlDot({ done, now }) {
   );
 }
 
+/* ─── Profile Screen (Compact Mobile - Image 1) ─────────────── */
+function ProfileScreen({ user, onBack, onLogout, onResetDemo, onCoopChange }) {
+  const [showCoopModal, setShowCoopModal] = useState(false);
+  const initials = user ? `${user.nom?.[0] || ""}${user.prenom?.[0] || ""}`.toUpperCase() : "KA";
+  const coopName = user?.coop || "COOPAC Kpalimé";
+
+  return (
+    <>
+      <div style={{
+        background: "#FAF8F3",
+        minHeight: "100vh",
+        padding: "0 16px 24px",
+        fontFamily: "'Segoe UI','Helvetica Neue',sans-serif",
+      }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 16, paddingBottom: 16 }}>
+          <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+            <Ico.ArrowLeft />
+          </button>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>Profil</h1>
+        </div>
+
+        {/* User Card */}
+        <div style={{
+          background: W,
+          borderRadius: 16,
+          padding: 16,
+          marginBottom: 16,
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+        }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: "50%",
+            background: "linear-gradient(135deg, #B87333 0%, #8B4513 100%)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: W, fontWeight: 700, fontSize: 18, flexShrink: 0,
+          }}>
+            {initials}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontWeight: 600, fontSize: 16, color: "#1A1A1A", marginBottom: 2 }}>
+              {user ? `${user.prenom} ${user.nom}` : "Kossi Adjovi"}
+            </div>
+            <div style={{ fontSize: 12, color: "#888" }}>
+              Agriculteur · {coopName}
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+          <div style={{ background: W, borderRadius: 16, padding: 16 }}>
+            <div style={{ marginBottom: 8, color: OR }}>
+              <Ico.Trophy s={20} col={OR} />
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 22, color: "#1A1A1A", marginBottom: 2 }}>12</div>
+            <div style={{ fontSize: 11, color: "#888" }}>Lots certifiés</div>
+          </div>
+          <div style={{ background: W, borderRadius: 16, padding: 16 }}>
+            <div style={{ marginBottom: 8, color: OR }}>
+              <Ico.Wallet s={20} col={OR} />
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 22, color: "#1A1A1A", marginBottom: 2 }}>845 k FCFA</div>
+            <div style={{ fontSize: 11, color: "#888" }}>Revenu suivi</div>
+          </div>
+        </div>
+
+        {/* Settings */}
+        <div style={{ background: W, borderRadius: 16, overflow: "hidden", marginBottom: 16 }}>
+          <div style={{ padding: "12px 16", borderBottom: "1px solid #F0EBE2", display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 14, color: "#666" }}>Langue</span>
+            <span style={{ fontWeight: 600, fontSize: 14, color: "#1A1A1A" }}>Français</span>
+          </div>
+          <div style={{ padding: "12px 16", borderBottom: "1px solid #F0EBE2", display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 14, color: "#666" }}>Réseau</span>
+            <span style={{ fontWeight: 600, fontSize: 14, color: "#1A1A1A" }}>Polygon · Mainnet</span>
+          </div>
+          <div style={{ padding: "12px 16", display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 14, color: "#666" }}>Synchronisation</span>
+            <span style={{ fontWeight: 600, fontSize: 14, color: "#1A1A1A" }}>Auto</span>
+          </div>
+        </div>
+
+        {/* Change Cooperative */}
+        <button
+          onClick={() => setShowCoopModal(true)}
+          style={{
+            width: "100%",
+            background: W,
+            borderRadius: 16,
+            padding: "14px 16",
+            marginBottom: 16,
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Ico.Building s={18} col={G} />
+            <div style={{ textAlign: "left" }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A" }}>Changer de coopérative</div>
+              <div style={{ fontSize: 12, color: "#888", marginTop: 1 }}>{coopName}</div>
+            </div>
+          </div>
+          <Ico.ChevronRight s={16} col="#BBB" />
+        </button>
+
+        {/* Reset Demo */}
+        <button
+          onClick={onResetDemo}
+          style={{
+            width: "100%",
+            padding: "14px",
+            background: "#F0E6D8",
+            border: "none",
+            borderRadius: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            cursor: "pointer",
+            marginBottom: 12,
+          }}
+        >
+          <Ico.Reset s={16} col="#666" />
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#666" }}>Réinitialiser la démo</span>
+        </button>
+
+        {/* Logout */}
+        <button
+          onClick={onLogout}
+          style={{
+            width: "100%",
+            padding: "12px",
+            background: "none",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            cursor: "pointer",
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke={RED} strokeWidth="1.8" strokeLinecap="round" />
+            <polyline points="16,17 21,12 16,7" stroke={RED} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <line x1="21" y1="12" x2="9" y2="12" stroke={RED} strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          <span style={{ fontSize: 14, fontWeight: 600, color: RED }}>Se déconnecter</span>
+        </button>
+
+        {/* Footer */}
+        <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#AAA" }}>
+          ChainCacao v0.1 · MIABE Hackathon 2026
+        </div>
+      </div>
+
+      {/* Cooperative Modal */}
+      {showCoopModal && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.45)",
+            display: "flex",
+            alignItems: "flex-end",
+            zIndex: 9999,
+          }}
+          onClick={() => setShowCoopModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: W,
+              width: "100%",
+              maxWidth: 375,
+              borderRadius: "20px 20px 0 0",
+              padding: "20px 16px 28px",
+              maxHeight: "60vh",
+              overflowY: "auto",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>Coopérative</h3>
+              <button onClick={() => setShowCoopModal(false)} style={{ background: "none", border: "none", fontSize: 24, color: "#999", cursor: "pointer", padding: 0 }}>×</button>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {COOPERATIVES.map((coop) => (
+                <button
+                  key={coop.id}
+                  onClick={() => { onCoopChange({ name: coop.name }); setShowCoopModal(false); }}
+                  style={{
+                    padding: "14px 16",
+                    background: coop.name === coopName ? GL : "#F8F8F6",
+                    border: `2px solid ${coop.name === coopName ? G : "#E8E4DC"}`,
+                    borderRadius: 12,
+                    textAlign: "left",
+                    cursor: "pointer",
+                  }}
+                >
+                  <div style={{ fontWeight: 600, fontSize: 14, color: "#1A1A1A", marginBottom: 2 }}>{coop.name}</div>
+                  <div style={{ fontSize: 11, color: "#888" }}>Région: {coop.region}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 /* ─── Signup Screen ──────────────────────────────────────────── */
 function SignupScreen({ onSignup, onBackToLogin }) {
-  const [form, setForm] = useState({ name: "", phone: "", coop: "", password: "" });
+  const [form, setForm] = useState({ nom: "", prenom: "", phone: "", coop: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const handleSubmit = (e) => { e.preventDefault(); setLoading(true); setTimeout(() => { onSignup({ name: form.name, phone: form.phone, coop: form.coop, role: "farmer" }); setLoading(false); }, 1000); };
+  const handleSubmit = (e) => { e.preventDefault(); setLoading(true); setTimeout(() => { onSignup({ nom: form.nom, prenom: form.prenom, phone: form.phone, coop: form.coop, role: "farmer" }); setLoading(false); }, 1000); };
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: GBG, padding: 20 }}>
       <div style={{ background: W, padding: 24, borderRadius: 20, width: "100%", maxWidth: 420, boxShadow: "0 8px 30px rgba(0,0,0,0.1)" }}>
@@ -366,10 +653,11 @@ function SignupScreen({ onSignup, onBackToLogin }) {
           <Ico.Leaf s={40} col={G} /><h2 style={{ margin: "12px 0 4px", color: G }}>Rejoindre ChainCacao</h2><p style={{ margin: 0, color: "#666", fontSize: 13 }}>Crée ton compte agriculteur</p>
         </div>
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <input placeholder="👤 Nom complet" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
-          <input placeholder="📱 Téléphone" type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
-          <input placeholder="🤝 Coopérative" value={form.coop} onChange={e => setForm({ ...form, coop: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
-          <input type="password" placeholder="🔐 Mot de passe (min 4 caractères)" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="Nom" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="Prénom" value={form.prenom} onChange={e => setForm({ ...form, prenom: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="Téléphone" type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input placeholder="Coopérative" value={form.coop} onChange={e => setForm({ ...form, coop: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
+          <input type="password" placeholder="Mot de passe (min 4 caractères)" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ padding: 14, borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none" }} required />
           <Btn loading={loading} disabled={loading} style={{ marginTop: 8 }}>{loading ? "Création..." : "✅ Créer mon compte"}</Btn>
         </form>
         <div style={{ textAlign: "center", marginTop: 16, padding: "12px 0", borderTop: "1px solid #eee" }}>
@@ -384,15 +672,15 @@ function SignupScreen({ onSignup, onBackToLogin }) {
 /* ─── Login Screen ───────────────────────────────────────────── */
 function LoginScreen({ onLogin, onBack }) {
   const [phone, setPhone] = useState(""); const [password, setPassword] = useState(""); const [loading, setLoading] = useState(false);
-  const handleSubmit = (e) => { e.preventDefault(); setLoading(true); setTimeout(() => { if (phone && password.length >= 4) onLogin({ name: "Koffi Mensah", phone, coop: "COOPAC Kloto", role: "farmer" }); else alert("Identifiants incorrects"); setLoading(false); }, 800); };
+  const handleSubmit = (e) => { e.preventDefault(); setLoading(true); setTimeout(() => { if (phone && password.length >= 4) onLogin({ nom: "Mensah", prenom: "Koffi", phone, coop: "COOPAC Kloto", role: "farmer" }); else alert("Identifiants incorrects"); setLoading(false); }, 800); };
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #EAF3DE 0%, #F0EFEB 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
       <div style={{ background: W, borderRadius: 32, padding: 40, maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(44,95,26,0.15)" }}>
         <button onClick={onBack} style={{ background: "none", border: "none", fontSize: 14, color: "#888", cursor: "pointer", marginBottom: 16 }}>← Retour</button>
         <div style={{ textAlign: "center", marginBottom: 32 }}><Ico.Leaf s={56} col={G} /><h2 style={{ color: G, fontSize: 24, margin: "16px 0 8px", fontWeight: 800 }}>Connexion</h2><p style={{ color: "#666", margin: 0 }}>Accédez à votre espace agriculteur</p></div>
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <input type="tel" placeholder="📱 +228 XX XX XX XX" value={phone} onChange={e => setPhone(e.target.value)} style={{ width: "100%", padding: 14, borderRadius: 12, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box" }} required />
-          <input type="password" placeholder="🔐 Mot de passe" value={password} onChange={e => setPassword(e.target.value)} style={{ width: "100%", padding: 14, borderRadius: 12, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box" }} required />
+          <input type="tel" placeholder="+228 XX XX XX XX" value={phone} onChange={e => setPhone(e.target.value)} style={{ width: "100%", padding: 14, borderRadius: 12, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box" }} required />
+          <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} style={{ width: "100%", padding: 14, borderRadius: 12, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box" }} required />
           <button type="submit" disabled={loading} style={{ width: "100%", padding: 16, background: loading ? "#999" : G, color: W, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: loading ? "wait" : "pointer" }}>{loading ? "Connexion..." : "Se connecter"}</button>
         </form>
         <div style={{ textAlign: "center", marginTop: 20, padding: "16px 0", borderTop: "1px solid #eee" }}>
@@ -662,9 +950,14 @@ function ExportCertificate({ lot, onBack }) {
       </div>
 
       {/* Actions */}
-      <button onClick={() => alert("Certificat partagé !")} style={{ width: "100%", padding: 15, background: "transparent", color: G, border: "2px solid " + G, borderRadius: 13, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 12, fontFamily: "Outfit" }}>
-        <Ico.FileCert s={18} /> Partager le certificat
-      </button>
+      <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+        <button onClick={() => alert("Certificat téléchargé !")} style={{ flex: 1, padding: 15, background: G, color: W, border: "none", borderRadius: 13, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: "Outfit" }}>
+          <Ico.Download s={18} col={W} /> Télécharger
+        </button>
+        <button onClick={() => alert("Certificat partagé !")} style={{ flex: 1, padding: 15, background: "transparent", color: G, border: "2px solid " + G, borderRadius: 13, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: "Outfit" }}>
+          <Ico.Share s={18} /> Partager
+        </button>
+      </div>
       <button onClick={onBack} style={{ width: "100%", padding: 15, background: "transparent", color: G, border: "2px solid " + G, borderRadius: 13, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 8, fontFamily: "Outfit" }}>
         ← Retour au lot
       </button>
@@ -718,6 +1011,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('farmer');
   const [selectedLot, setSelectedLot] = useState(null);
   const [certLot, setCertLot] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
   const gps = useGPS();
   const fileRef = useRef();
 
@@ -731,7 +1025,7 @@ export default function App() {
 
   async function handleSubmit() {
     setSyncing(true);
-    const record = { ...form, gps: gps.coords, timestamp: Date.now(), farmer: user?.name || "Koffi Mensah", coop: user?.coop || "COOPAC Kloto" };
+    const record = { ...form, gps: gps.coords, timestamp: Date.now(), farmer: user ? `${user.prenom} ${user.nom}` : "Koffi Mensah", coop: user?.coop || "COOPAC Kloto" };
     if (offline) {
       addToQueue(record); setQueueCount(q => q + 1);
       setSyncState({ status: "queued", hash: null, blockId: null, error: null, queued: true });
@@ -770,6 +1064,19 @@ export default function App() {
     if (authScreen === 'welcome') return <WelcomeScreen onLogin={() => setAuthScreen('login')} onSignup={() => setAuthScreen('signup')} />;
     if (authScreen === 'login') return <LoginScreen onLogin={(d) => { if (d === 'signup') setAuthScreen('signup'); else setUser(d); }} onBack={() => setAuthScreen('welcome')} />;
     if (authScreen === 'signup') return <SignupScreen onSignup={setUser} onBack={() => setAuthScreen('welcome')} />;
+  }
+
+  // ─── Profile Screen ──────────────────────────────────────────
+  if (showProfile) {
+    return (
+      <ProfileScreen 
+        user={user} 
+        onBack={() => setShowProfile(false)}
+        onLogout={() => { setUser(null); setShowProfile(false); }}
+        onResetDemo={() => alert("Démo réinitialisée !")}
+        onCoopChange={(coop) => setUser({ ...user, coop: coop.name })}
+      />
+    );
   }
 
   // ─── Determine header title ─────────────────────────────────
@@ -828,7 +1135,7 @@ export default function App() {
                 </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginTop: 6 }}>
-                {[50, 100, 200, 500].map(n => (
+                {[15, 100, 200, 500].map(n => (
                   <button key={n} onClick={() => setForm(f => ({ ...f, weight: String(n) }))} style={{ padding: "8px 0", borderRadius: 9, border: `1.5px solid ${form.weight === String(n) ? G : "#e0e0e0"}`, background: form.weight === String(n) ? GL : W, color: form.weight === String(n) ? G : "#555", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>{n} kg</button>
                 ))}
               </div>
@@ -876,7 +1183,7 @@ export default function App() {
           <div style={{ animation: "fadeUp .3s ease" }}>
             <SectionTitle icon={<Ico.Clipboard />} text="Récapitulatif" />
             <div className="card">
-              {[{ l: "Espèce", v: form.species?.label }, { l: "Poids brut", v: `${form.weight} kg` }, { l: "Date", v: new Date(form.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) }, { l: "Producteur", v: user?.name || "Koffi Mensah" }, { l: "Coopérative", v: user?.coop || "COOPAC Kloto" }, { l: "Photo", v: form.photoURL ? "✓ Capturée" : "Non fournie" }].map(({ l, v }) => (
+              {[{ l: "Espèce", v: form.species?.label }, { l: "Poids brut", v: `${form.weight} kg` }, { l: "Date", v: new Date(form.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) }, { l: "Producteur", v: user ? `${user.prenom} ${user.nom}` : "Koffi Mensah" }, { l: "Coopérative", v: user?.coop || "COOPAC Kloto" }, { l: "Photo", v: form.photoURL ? "✓ Capturée" : "Non fournie" }].map(({ l, v }) => (
                 <RowField key={l} label={l} value={v} />
               ))}
             </div>
@@ -969,22 +1276,24 @@ export default function App() {
         <div style={{ background: GD, padding: "11px 20px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ color: W, fontWeight: 700, fontSize: 15 }}>9:40</span>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <button onClick={() => setOffline(o => !o)} style={{ background: offline ? "rgba(232,153,10,.25)" : "rgba(255,255,255,.15)", border: "none", borderRadius: 8, padding: "2px 8px", cursor: "pointer", color: W, fontSize: 10, fontWeight: 600 }}>{offline ? "HORS-LIGNE" : "EN LIGNE"}</button>
+            <Ico.Network4G />
             <Ico.Wifi off={offline} />
+            <div style={{ width: 22, height: 12, border: `1px solid ${W}`, borderRadius: 3, position: "relative" }}>
+              <div style={{ position: "absolute", left: 1, top: 1, right: 1, bottom: 1, background: W, borderRadius: 2 }} />
+            </div>
           </div>
         </div>
         {/* Header */}
         <div style={{ background: GD, padding: "8px 18px 16px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            {showBack && <div onClick={() => { setSelectedLot(null); setCertLot(null); }} style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(255,255,255,.12)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: W }}><Ico.ArrowLeft /></div>}
-            <div><div style={{ color: "rgba(255,255,255,.65)", fontSize: 11, marginBottom: 2 }}>{headerSub}</div><div style={{ color: W, fontSize: 19, fontWeight: 700 }}>{headerTitle}</div></div>
+          <div style={{ flex: 1 }}>
+            <div style={{ color: "rgba(255,255,255,.65)", fontSize: 11, marginBottom: 2 }}>{headerSub}</div>
+            <div style={{ color: W, fontSize: 19, fontWeight: 700 }}>{headerTitle}</div>
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             {queueCount > 0 && <button onClick={drainQueue} style={{ position: "relative", background: "rgba(232,153,10,.25)", border: "1px solid rgba(232,153,10,.5)", borderRadius: 10, padding: "6px 10px", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}><Ico.Cloud synced={false} /><span style={{ color: W, fontSize: 11, fontWeight: 700 }}>{queueCount}</span></button>}
             <div style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,.15)", display: "flex", alignItems: "center", justifyContent: "center" }}><Ico.Bell /></div>
-            <div onClick={() => { if (window.confirm("Se déconnecter ?")) setUser(null); }} style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,.25)", display: "flex", alignItems: "center", justifyContent: "center", color: W, fontWeight: 700, fontSize: 13, cursor: "pointer", position: "relative" }}>
-              {user?.name?.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
-              <span style={{ position: "absolute", bottom: -4, right: -4, width: 14, height: 14, borderRadius: "50%", background: OR, color: W, fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center", border: `2px solid ${GD}` }}>✕</span>
+            <div onClick={() => setShowProfile(true)} style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,.25)", display: "flex", alignItems: "center", justifyContent: "center", color: W, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+              {user ? `${user.nom?.[0] || ''}${user.prenom?.[0] || ''}`.toUpperCase() : "KM"}
             </div>
           </div>
         </div>
